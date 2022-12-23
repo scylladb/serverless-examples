@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -8,16 +9,16 @@ import (
 	"github.com/gocql/gocql/scyllacloud"
 )
 
-const (
-	connectionBundlePath = "/file/downloaded/from/cloud/connect-bundle-test.yaml"
-)
+var connectionBundlePath = flag.String("bundle", "connect-bundle-cluster-name.yaml", "Path to the connection bundle file")
 
 func main() {
-	cluster, err := scyllacloud.NewCloudCluster(connectionBundlePath)
+	flag.Parse()
+
+	cluster, err := scyllacloud.NewCloudCluster(*connectionBundlePath)
 	if err != nil {
 		log.Fatalf("Failed to create cloud cluster config: %s", err)
 	}
-	cluster.PoolConfig.HostSelectionPolicy = gocql.DCAwareRoundRobinPolicy("AWS_US_EAST_1")
+	cluster.PoolConfig.HostSelectionPolicy = gocql.DCAwareRoundRobinPolicy("us-east-1")
 
 	session, err := cluster.CreateSession()
 	if err != nil {
