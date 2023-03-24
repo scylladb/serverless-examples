@@ -1,0 +1,28 @@
+name: Java
+
+on:
+  push:
+    branches:
+    - "main"
+    paths:
+    - "jhelloserverless/**"
+    - ".github/workflows/**"
+  pull_request:
+    branches:
+    - "main"
+    paths:
+    - "jhelloserverless/**"
+    - ".github/workflows/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+    - working-directory: ./jhelloserverless
+      run: mvn verify
