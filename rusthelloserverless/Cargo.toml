@@ -1,0 +1,13 @@
+[package]
+edition = "2021"
+name = "cloud"
+version = "0.0.0"
+
+[dev-dependencies]
+scylla = {version = "0.8.0", features = ["ssl", "cloud"]}
+tokio = {version = "1.1.0", features = ["full"]}
+anyhow = "1.0.33"
+
+[[example]]
+name = "cloud"
+path = "cloud.rs"
