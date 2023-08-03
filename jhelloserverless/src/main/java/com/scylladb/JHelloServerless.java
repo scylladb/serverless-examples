@@ -5,6 +5,7 @@ import com.datastax.driver.core.Host;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.DCAwareRoundRobinPolicy;
+import com.datastax.driver.core.policies.TokenAwarePolicy;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -29,7 +30,7 @@ public class JHelloServerless {
     File bundleFile = new File(BUNDLE_PATH);
 
     Cluster cluster = Cluster.builder()
-        .withLoadBalancingPolicy(DCAwareRoundRobinPolicy.builder().withLocalDc("AWS_US_EAST_1").build()) // your local data center
+        .withLoadBalancingPolicy(new TokenAwarePolicy(DCAwareRoundRobinPolicy.builder().withLocalDc("AWS_US_EAST_1").build())) // your local data center
         .withScyllaCloudConnectionConfig(bundleFile)
         .build();
 
